@@ -1,0 +1,40 @@
+{
+  "brand": {
+    "name": "जनआवाज",
+    "tagline": "नागरिकांच्या आवाजातून प्रत्यक्ष बदल",
+    "motto": "तक्रारी मोजू नका. प्रभाव मोजा."
+  },
+  "nav": {
+    "dashboard": "डॅशबोर्ड",
+    "raiseIssue": "तक्रार नोंदवा",
+    "myComplaints": "माझ्या तक्रारी",
+    "impactMap": "प्रभाव नकाशा",
+    "discoverProjects": "प्रकल्प शोधा",
+    "projects": "प्रकल्प",
+    "funding": "निधी ट्रॅकर",
+    "verificationCenter": "पडताळणी केंद्र",
+    "analytics": "अनालिटिक्स",
+    "aiInsights": "एआय विश्लेषण",
+    "reports": "अहवाल",
+    "notifications": "सूचना",
+    "settings": "सेटिंग्ज",
+    "help": "मदत व वारंवार विचारले जाणारे प्रश्न",
+    "logout": "लॉग आउट",
+    "askAi": "जनआवाज AI ला विचारा"
+  },
+  "roles": {
+    "citizen": "नागरिक",
+    "ngo": "एनजीओ / सीएसआर भागीदार",
+    "policymaker": "धोरणकर्ते / महानगरपालिका"
+  },
+  "common": {
+    "demoData": "डेमो डेटा",
+    "searchPlaceholder": "जनआवाज मध्ये शोधा...",
+    "estimateNotice": "अंदाजित बाधित लोकसंख्या, स्वतंत्र व्यक्ती असणे आवश्यक नाही.",
+    "viewDetails": "तपशील पहा",
+    "exploreHotspot": "हॉटस्पॉट तपासा",
+    "peopleImpacted": "बाधित नागरिक",
+    "impactScore": "प्रभाव गुणसंख्या",
+    "evidenceConfidence": "पुराव्याची विश्वासार्हता"
+  }
+}

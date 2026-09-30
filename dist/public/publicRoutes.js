@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const publicController_1 = require("./publicController");
+const router = (0, express_1.Router)();
+router.post('/visit', (req, res, next) => publicController_1.publicController.recordVisit(req, res, next));
+router.get('/stats', (req, res, next) => publicController_1.publicController.getStats(req, res, next));
+router.get('/feed', (req, res, next) => publicController_1.publicController.getPublicFeed(req, res, next));
+router.get('/categories', (req, res, next) => publicController_1.publicController.getCategories(req, res, next));
+router.get('/leaderboard', (req, res, next) => publicController_1.publicController.getLeaderboard(req, res, next));
+router.get('/ngos/:id/profile', (req, res, next) => publicController_1.publicController.getNgoProfile(req, res, next));
+exports.default = router;

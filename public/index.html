@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Janawwaz (जनआवाज) - Pune Civic Issue Resolution Platform</title>
+  <meta name="description" content="AI-Powered transparent civic issue resolution platform for Pune citizens, verified NGOs, and municipal administrators.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+  <!-- Demo Role Switcher Top Bar -->
+  <header class="demo-bar">
+    <div class="demo-bar-left">
+      <span class="demo-badge">Live System</span>
+      <span style="color: var(--text-secondary); font-size: 0.8rem;">Role Demo Switcher:</span>
+      <div class="role-switcher-group">
+        <button class="role-btn active" id="btn-view-public" onclick="switchView('public')">🌐 Landing & Feed</button>
+        <button class="role-btn" id="btn-view-citizen" onclick="switchView('citizen')">👤 Citizen Portal</button>
+        <button class="role-btn" id="btn-view-ngo" onclick="switchView('ngo')">🏢 NGO Portal</button>
+        <button class="role-btn" id="btn-view-admin" onclick="switchView('admin')">🛡️ Admin Portal</button>
+        <button class="role-btn" id="btn-view-volunteer" onclick="switchView('volunteer')">🤝 Volunteer Feed</button>
+      </div>
+    </div>
+    <div id="auth-status-container">
+      <button class="btn-primary" id="header-login-btn" onclick="openCitizenAuthModal()">Citizen Login / Sign Up</button>
+    </div>
+  </header>
+
+  <!-- Main Navigation Bar -->
+  <nav class="main-navbar">
+    <div class="brand" onclick="switchView('public')">
+      <div class="brand-icon">🏛️</div>
+      <div>
+        <div class="brand-name">JANAWWAZ <span style="font-size: 0.9rem; font-weight: 500; color: var(--accent-emerald);">जनआवाज</span></div>
+        <div class="brand-subtitle">Pune Municipal Civic Action Network</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a class="nav-link active" onclick="switchView('public'); scrollToSection('section-feed')">Civic Feed</a>
+      <a class="nav-link" onclick="switchView('public'); scrollToSection('section-leaderboard')">NGO Leaderboard</a>
+      <a class="nav-link" onclick="switchView('public'); scrollToSection('section-categories')">Categories & SLAs</a>
+      <a class="nav-link" href="/swagger-ui.html" target="_blank">REST API Docs</a>
+      <button class="btn-primary" onclick="openReportModal()">+ Report Issue</button>
+    </div>
+  </nav>
+
+  <!-- =========================================================================
+       VIEW 1: PUBLIC LANDING PAGE
+       ========================================================================= -->
+  <main id="view-public" class="dashboard-view active">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-pill">✨ Powered by Google Gemini AI & Row-Locked MySQL Engine</div>
+      <h1 class="hero-title">Voice for Every Citizen.<br><span>Action for Every Street.</span></h1>
+      <p class="hero-subtitle">
+        Empowering Pune citizens to report civic grievances with instant AI screening, automated clustering, 
+        verified NGO assignment, and municipal accountability across all wards.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="openReportModal()" style="padding: 14px 28px; font-size: 1.05rem;">🚀 Report an Issue Now</button>
+        <button class="btn-secondary" onclick="openCitizenAuthModal()" style="padding: 14px 28px; font-size: 1.05rem;">🔑 Citizen OTP Login</button>
+      </div>
+    </section>
+
+    <!-- Impact Metrics Section -->
+    <section class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-num" id="stat-total-requests">--</div>
+        <div class="metric-label">Total Grievances Registered</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num" id="stat-resolved-requests" style="color: var(--accent-emerald);">--</div>
+        <div class="metric-label">Repairs Completed & Closed</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num" id="stat-active-ngos" style="color: var(--accent-cyan);">--</div>
+        <div class="metric-label">Verified Active NGOs in Pune</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num" id="stat-avg-hours" style="color: var(--accent-amber);">--</div>
+        <div class="metric-label">Avg. Resolution Speed (Hours)</div>
+      </div>
+    </section>
+
+    <!-- Live Public Civic Feed -->
+    <section class="content-container" id="section-feed">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Live Pune Civic Feed</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">Real-time stream of verified citizen complaints and repairs across Pune.</p>
+        </div>
+        <div>
+          <select id="feed-category-filter" class="form-select" onchange="loadPublicFeed()" style="width: 220px;">
+            <option value="all">All Categories</option>
+          </select>
+        </div>
+      </div>
+      <div class="feed-grid" id="public-feed-container">
+        <!-- Rendered dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- NGO Leaderboard Section -->
+    <section class="content-container" id="section-leaderboard">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Pune NGO Leaderboard</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">
+            Ranked via strict mathematical formula: <code>w1·Completed + w2·Rating + w3·Speed - w4·Abandons - w5·Rejections</code>
+          </p>
+        </div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>NGO Name</th>
+            <th>Service Area</th>
+            <th>Rank Score</th>
+            <th>Completed Repairs</th>
+            <th>Citizen Rating</th>
+            <th>Avg Speed</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-table-body">
+          <!-- Rendered dynamically via JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Categories & SLAs Section -->
+    <section class="content-container" id="section-categories">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Supported Categories & SLAs</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">Official turnaround standards and typical budget allocations.</p>
+        </div>
+      </div>
+      <div class="feed-grid" id="categories-container" style="grid-template-columns: repeat(4, 1fr);">
+        <!-- Rendered dynamically via JS -->
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       VIEW 2: CITIZEN DASHBOARD
+       ========================================================================= -->
+  <main id="view-citizen" class="dashboard-view content-container" style="padding-top: 36px;">
+    <div class="dashboard-banner">
+      <div>
+        <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 4px;">Citizen Command Dashboard</h2>
+        <p style="color: var(--text-secondary); font-size: 0.92rem;">Logged in as: <strong id="citizen-name-badge">Rohan Sharma (+919000000001)</strong></p>
+      </div>
+      <div style="display: flex; gap: 16px; align-items: center;">
+        <div style="background: rgba(0,0,0,0.3); padding: 8px 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Rewards Balance</div>
+          <div style="font-size: 1.4rem; font-weight: 800; color: var(--accent-emerald);" id="citizen-rewards-val">-- pts</div>
+        </div>
+        <button class="btn-primary" onclick="openReportModal()">+ Submit Grievance</button>
+      </div>
+    </div>
+
+    <!-- Citizen Reports List -->
+    <div class="section-header">
+      <h3 class="section-title" style="font-size: 1.35rem;">My Submitted Issues</h3>
+      <button class="btn-secondary" onclick="loadCitizenDashboard()">↻ Refresh</button>
+    </div>
+    <div id="citizen-reports-list" style="display: flex; flex-direction: column; gap: 16px;">
+      <!-- Dynamic list -->
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       VIEW 3: NGO DASHBOARD
+       ========================================================================= -->
+  <main id="view-ngo" class="dashboard-view content-container" style="padding-top: 36px;">
+    <div class="dashboard-banner" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.1));">
+      <div>
+        <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 4px;">NGO Operations Center</h2>
+        <p style="color: var(--text-secondary); font-size: 0.92rem;">Logged in: <strong id="ngo-name-badge">Pune Seva Foundation (Kothrud Ward)</strong></p>
+      </div>
+      <div style="display: flex; gap: 12px;">
+        <button class="btn-secondary" onclick="loadNgoDashboard()">↻ Refresh Queue</button>
+      </div>
+    </div>
+
+    <!-- Active Claims in Progress -->
+    <div class="section-header">
+      <h3 class="section-title" style="font-size: 1.35rem;">Active Claims & Work in Progress</h3>
+    </div>
+    <div id="ngo-active-claims-list" style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 48px;">
+      <!-- Rendered dynamically -->
+    </div>
+
+    <!-- Available Pune Requests to Claim -->
+    <div class="section-header">
+      <h3 class="section-title" style="font-size: 1.35rem;">Available Grievances in Service Area (Kothrud 15km)</h3>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Category</th>
+          <th>Description</th>
+          <th>Location</th>
+          <th>Priority</th>
+          <th>Budget</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="ngo-available-table-body">
+        <!-- Rendered dynamically -->
+      </tbody>
+    </table>
+  </main>
+
+  <!-- =========================================================================
+       VIEW 4: ADMIN DASHBOARD
+       ========================================================================= -->
+  <main id="view-admin" class="dashboard-view content-container" style="padding-top: 36px;">
+    <div class="dashboard-banner" style="background: linear-gradient(135deg, rgba(244, 63, 94, 0.15), rgba(139, 92, 246, 0.1)); border-color: rgba(244, 63, 94, 0.3);">
+      <div>
+        <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 4px;">Municipal Admin Authority</h2>
+        <p style="color: var(--text-secondary); font-size: 0.92rem;">Super-Admin: <strong>admin@civic.gov.in</strong> | High-Privilege Control Center</p>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button class="btn-secondary" onclick="openAddNgoModal()">+ Provision New NGO</button>
+        <button class="btn-primary" onclick="loadAdminDashboard()">↻ Sync Queues</button>
+      </div>
+    </div>
+
+    <!-- 4 Queues Section -->
+    <div class="section-header">
+      <div style="display: flex; gap: 8px;">
+        <button class="role-btn active" id="tab-admin-screening" onclick="setAdminTab('screening')">Needs Review Queue</button>
+        <button class="role-btn" id="tab-admin-unclaimed" onclick="setAdminTab('unclaimed')">Unclaimed Issues</button>
+        <button class="role-btn" id="tab-admin-inprogress" onclick="setAdminTab('inprogress')">In-Progress Repairs</button>
+        <button class="role-btn" id="tab-admin-escalated" onclick="setAdminTab('escalated')">Escalated SLA Breaches</button>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Category</th>
+          <th>Description & AI Summary</th>
+          <th>Status</th>
+          <th>Location</th>
+          <th>Budget</th>
+          <th>Admin Action</th>
+        </tr>
+      </thead>
+      <tbody id="admin-queue-table-body">
+        <!-- Rendered dynamically -->
+      </tbody>
+    </table>
+  </main>
+
+  <!-- =========================================================================
+       VIEW 5: VOLUNTEER DASHBOARD
+       ========================================================================= -->
+  <main id="view-volunteer" class="dashboard-view content-container" style="padding-top: 36px;">
+    <div class="dashboard-banner" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(245, 158, 11, 0.1)); border-color: rgba(16, 185, 129, 0.3);">
+      <div>
+        <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 4px;">Volunteer Action & Assistance Feed</h2>
+        <p style="color: var(--text-secondary); font-size: 0.92rem;">Assisting with low-budget (&le; ₹2000), AI-tagged easy tasks, and escalated civic bottlenecks.</p>
+      </div>
+      <button class="btn-secondary" onclick="loadVolunteerDashboard()">↻ Refresh</button>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Category</th>
+          <th>Issue Description</th>
+          <th>Location</th>
+          <th>Citizen Phone (Masked)</th>
+          <th>Status Tag</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="volunteer-table-body">
+        <!-- Rendered dynamically -->
+      </tbody>
+    </table>
+  </main>
+
+  <!-- =========================================================================
+       MODAL 1: CITIZEN LOGIN & SIGNUP (OTP ONLY)
+       ========================================================================= -->
+  <div class="modal-backdrop" id="modal-citizen-auth">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Citizen Phone OTP Access</h3>
+        <button class="close-btn" onclick="closeModal('modal-citizen-auth')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="info-banner">
+          <strong>🔒 Citizen Portal Only:</strong> Sign up and sign in is exclusively for citizens. NGOs and municipal administrators are vetted and created exclusively by the Civic Authority.
+        </div>
+
+        <div id="auth-step-phone">
+          <div class="form-group">
+            <label class="form-label">Indian Mobile Number</label>
+            <input type="text" class="form-input" id="auth-phone-input" placeholder="+919000000001" value="+919000000001">
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 6px;">Quick Pune Test Citizens (1-Click Fill):</div>
+            <div class="phone-chips">
+              <span class="phone-chip" onclick="fillTestPhone('+919000000001')">👤 Rohan Sharma (+919000000001)</span>
+              <span class="phone-chip" onclick="fillTestPhone('+919000000002')">👤 Priya Deshmukh (+919000000002)</span>
+              <span class="phone-chip" onclick="fillTestPhone('+919000000003')">👤 Amit Joshi (+919000000003)</span>
+            </div>
+          </div>
+          <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="requestCitizenOtp()">Send Verification OTP</button>
+        </div>
+
+        <div id="auth-step-otp" style="display: none;">
+          <div class="form-group">
+            <label class="form-label">Enter 6-Digit OTP</label>
+            <input type="text" class="form-input" id="auth-otp-input" placeholder="123456" value="123456">
+            <div style="font-size: 0.8rem; color: var(--accent-emerald-light); margin-top: 6px;">
+              💡 Mock OTP <strong>123456</strong> is pre-filled for testing.
+            </div>
+          </div>
+          <button class="btn-primary" style="width: 100%; justify-content: center; margin-bottom: 10px;" onclick="verifyCitizenOtp()">Verify & Enter Dashboard</button>
+          <button class="btn-secondary" style="width: 100%; justify-content: center;" onclick="backToPhoneStep()">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 2: REPORT NEW CIVIC ISSUE
+       ========================================================================= -->
+  <div class="modal-backdrop" id="modal-report-issue">
+    <div class="modal-card" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Report New Civic Grievance</h3>
+        <button class="close-btn" onclick="closeModal('modal-report-issue')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Issue Category</label>
+          <select class="form-select" id="report-category-select">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description of Grievance</label>
+          <textarea class="form-textarea" id="report-desc-input" rows="3" placeholder="Provide accurate details (e.g. Deep pothole right in front of bus stand causing severe traffic...)"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Issue Photo (Simulated Upload)</label>
+          <select class="form-select" id="report-photo-select">
+            <option value="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=800">📸 Pothole / Broken Asphalt Street Photo</option>
+            <option value="https://images.unsplash.com/photo-1605600659873-d808a13e4d2a?w=800">📸 Overflowing Garbage Bin Photo</option>
+            <option value="https://images.unsplash.com/photo-1541888946425-d0fbb186f5f8?w=800">📸 Broken Water Main / Road Leakage</option>
+            <option value="https://images.unsplash.com/photo-1508873696983-2df5703bc246?w=800">📸 Fallen Tree / Road Block</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Pune Location / Ward</label>
+          <select class="form-select" id="report-location-select">
+            <option value="18.5074,73.8077,Kothrud Shivaji Chowk, Pune">📍 Kothrud (Shivaji Chowk) [18.5074, 73.8077]</option>
+            <option value="18.5089,73.9260,Hadapsar Gadital, Pune">📍 Hadapsar (Gadital) [18.5089, 73.9260]</option>
+            <option value="18.6279,73.8009,Pimpri Market, Pune">📍 Pimpri (Main Market) [18.6279, 73.8009]</option>
+            <option value="18.5204,73.8567,Shivaji Nagar Bus Stand, Pune">📍 Shivaji Nagar [18.5204, 73.8567]</option>
+            <option value="18.5590,73.7868,Baner Road High Street, Pune">📍 Baner Road [18.5590, 73.7868]</option>
+          </select>
+        </div>
+
+        <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="submitReportIssue()">Submit Issue for AI Screening</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 3: RATE COMPLETED WORK
+       ========================================================================= -->
+  <div class="modal-backdrop" id="modal-rate-issue">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Rate Completed Civic Repair</h3>
+        <button class="close-btn" onclick="closeModal('modal-rate-issue')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">
+          How satisfied are you with the speed and quality of work done by the assigned NGO team?
+        </p>
+        <input type="hidden" id="rate-request-id">
+        <div class="form-group">
+          <label class="form-label">Star Rating (1 - 5 Stars)</label>
+          <select class="form-select" id="rate-stars-select">
+            <option value="5">⭐⭐⭐⭐⭐ 5 Stars - Exceptional Quick Repair</option>
+            <option value="4">⭐⭐⭐⭐ 4 Stars - Very Good Quality</option>
+            <option value="3">⭐⭐⭐ 3 Stars - Satisfactory</option>
+            <option value="2">⭐⭐ 2 Stars - Substandard Quality</option>
+            <option value="1">⭐ 1 Star - Poor Execution</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Citizen Feedback / Comment</label>
+          <textarea class="form-textarea" id="rate-comment-input" rows="3" placeholder="Thank you to the Pune Seva team for fixing this street within 24 hours!"></textarea>
+        </div>
+        <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="submitRating()">Submit Rating (+10 Reward Points)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 4: ADMIN REGISTER NEW NGO
+       ========================================================================= -->
+  <div class="modal-backdrop" id="modal-add-ngo">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Provision New NGO Partner</h3>
+        <button class="close-btn" onclick="closeModal('modal-add-ngo')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="info-banner">
+          <strong>Super-Admin Privileged Action:</strong> Only administrators can register NGOs to prevent unvetted organizations from claiming civic public work.
+        </div>
+        <div class="form-group">
+          <label class="form-label">NGO Registered Name</label>
+          <input type="text" class="form-input" id="ngo-name-input" placeholder="Viman Nagar Sanitation Trust">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Official Email (Used for Login)</label>
+          <input type="email" class="form-input" id="ngo-email-input" placeholder="vimannagar.ngo@civic.gov.in">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Government Registration Number</label>
+          <input type="text" class="form-input" id="ngo-reg-input" placeholder="MH/PUNE/2026/0890">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ward / Service Center Area</label>
+          <input type="text" class="form-input" id="ngo-area-input" placeholder="Viman Nagar / Kalyani Nagar" value="Viman Nagar">
+        </div>
+        <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="submitCreateNgo()">Create NGO & Generate Credentials</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

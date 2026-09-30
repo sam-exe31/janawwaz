@@ -1,0 +1,40 @@
+{
+  "brand": {
+    "name": "जनआवाज",
+    "tagline": "नागरिक संकेतों से ज़मीनी बदलाव तक",
+    "motto": "शिकायतें मत गिनो, प्रभाव गिनो।"
+  },
+  "nav": {
+    "dashboard": "डैशबोर्ड",
+    "raiseIssue": "समस्या दर्ज करें",
+    "myComplaints": "मेरी शिकायतें",
+    "impactMap": "प्रभाव मानचित्र",
+    "discoverProjects": "परियोजनाएं खोजें",
+    "projects": "परियोजनाएं",
+    "funding": "फंडिंग ट्रैकर",
+    "verificationCenter": "सत्यापन केंद्र",
+    "analytics": "एनालिटिक्स",
+    "aiInsights": "एआई अंतर्दृष्टि",
+    "reports": "रिपोर्ट्स",
+    "notifications": "सूचनाएं",
+    "settings": "सेटिंग्स",
+    "help": "सहायता एवं सवाल",
+    "logout": "लॉग आउट",
+    "askAi": "जनआवाज AI से पूछें"
+  },
+  "roles": {
+    "citizen": "नागरिक",
+    "ngo": "एनजीओ / सीएसआर भागीदार",
+    "policymaker": "नीति निर्माता / नगर पालिका"
+  },
+  "common": {
+    "demoData": "डेमो डेटा",
+    "searchPlaceholder": "जनआवाज में खोजें...",
+    "estimateNotice": "अनुमानित प्रभावित जनसंख्या, जरूरी नहीं कि अलग-अलग व्यक्ति हों।",
+    "viewDetails": "विवरण देखें",
+    "exploreHotspot": "हॉटस्पॉट जांचें",
+    "peopleImpacted": "प्रभावित लोग",
+    "impactScore": "इम्पैक्ट स्कोर",
+    "evidenceConfidence": "साक्ष्य विश्वसनीयता"
+  }
+}

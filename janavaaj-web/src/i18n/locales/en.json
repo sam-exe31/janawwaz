@@ -1,0 +1,40 @@
+{
+  "brand": {
+    "name": "Janavaaj",
+    "tagline": "From Citizen Signals to Real-World Impact",
+    "motto": "Don't count complaints. Count impact."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "raiseIssue": "Raise an Issue",
+    "myComplaints": "My Complaints",
+    "impactMap": "Impact Map",
+    "discoverProjects": "Discover Projects",
+    "projects": "Projects",
+    "funding": "Funding Tracker",
+    "verificationCenter": "Verification Center",
+    "analytics": "Analytics",
+    "aiInsights": "AI Insights",
+    "reports": "Reports",
+    "notifications": "Notifications",
+    "settings": "Settings",
+    "help": "Help & FAQs",
+    "logout": "Sign Out",
+    "askAi": "Ask Janavaaj AI"
+  },
+  "roles": {
+    "citizen": "Citizen",
+    "ngo": "NGO / CSR Partner",
+    "policymaker": "Policymaker / Municipal Admin"
+  },
+  "common": {
+    "demoData": "Demo Data",
+    "searchPlaceholder": "Search Janavaaj...",
+    "estimateNotice": "Estimated affected population associated with reported issues, not necessarily unique individuals.",
+    "viewDetails": "View Details",
+    "exploreHotspot": "Investigate Hotspot",
+    "peopleImpacted": "People Impacted",
+    "impactScore": "Impact Score",
+    "evidenceConfidence": "Evidence Confidence"
+  }
+}
