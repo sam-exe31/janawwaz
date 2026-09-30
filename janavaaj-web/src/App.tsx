@@ -68,11 +68,11 @@ export default function App() {
 
       {/* Protected App Routes */}
       <Route element={<RequireAuth />}>
-        {/* Automatic role dashboard redirect */}
-        <Route path="/app" element={<AppRedirect />} />
-
         {/* Unified App Shell Layout */}
         <Route path="/app" element={<AppShell />}>
+          {/* Automatic role dashboard redirect when visiting /app */}
+          <Route index element={<AppRedirect />} />
+
           {/* Strict Citizen Access Only */}
           <Route element={<RequireRole roles={['CITIZEN']} />}>
             <Route path="citizen" element={<CitizenDashboard />} />

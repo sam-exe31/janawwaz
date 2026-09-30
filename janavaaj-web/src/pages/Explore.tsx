@@ -15,7 +15,8 @@ export default function Explore() {
 
   const points = useMemo<MapPoint[]>(() => {
     if (!data) return [];
-    return data.items
+    const items = Array.isArray(data.items) ? data.items : Array.isArray(data) ? (data as any[]) : [];
+    return items
       .filter((f) => f.latitude != null && f.longitude != null)
       .map((f) => ({
         id: f.id,
